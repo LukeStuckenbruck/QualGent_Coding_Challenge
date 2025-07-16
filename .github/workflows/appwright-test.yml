@@ -31,8 +31,9 @@ jobs:
 
       - name: Poll for job completion
         run: |
+          sudo apt-get update && sudo apt-get install -y jq
           for i in {1..30}; do
-            STATUS=$(qgjob status --job-id=${{ steps.submit.outputs.job_id }} | grep status | awk -F"status": '{print $2}' | awk -F" '{print $2}')
+            STATUS=$(qgjob status --job-id=${{ steps.submit.outputs.job_id }} | jq -r '.status')
             echo "Current status: $STATUS"
             if [ "$STATUS" = "completed" ]; then
               exit 0
