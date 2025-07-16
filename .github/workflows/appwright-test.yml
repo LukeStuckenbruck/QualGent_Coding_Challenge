@@ -36,5 +36,11 @@ jobs:
       - name: Install AppWright
         run: npm install -g appwright
 
+      - name: Install Playwright
+        run: npm install -g playwright
+
+      - name: Install Playwright Browsers
+        run: npx playwright install
+
       - name: Run AppWright test
         run: npx appwright test tests/onboarding.spec.js 
