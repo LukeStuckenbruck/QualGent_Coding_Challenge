@@ -1,0 +1,43 @@
+name: AppWright Test
+on: [push]
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install CLI and backend dependencies
+        run: |
+          pip install --upgrade pip
+          pip install .
+          pip install fastapi uvicorn pydantic
+
+      - name: Start backend service
+        run: |
+          nohup python -c "import uvicorn; uvicorn.run('job_server.main:app', host='127.0.0.1', port=8000)" &
+          sleep 5
+
+      - name: Submit test job
+        id: submit
+        run: |
+          JOB_ID=$(qgjob submit --org-id=qualgent --app-version-id=xyz123 --test=tests/onboarding.spec.js --target=emulator | grep 'Job ID:' | awk '{print $4}')
+          echo "job_id=$JOB_ID" >> $GITHUB_OUTPUT
+
+      - name: Poll for job completion
+        run: |
+          for i in {1..30}; do
+            STATUS=$(qgjob status --job-id=${{ steps.submit.outputs.job_id }} | grep status | awk -F"status": '{print $2}' | awk -F" '{print $2}')
+            echo "Current status: $STATUS"
+            if [ "$STATUS" = "completed" ]; then
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Job did not complete in time"
+          exit 1 

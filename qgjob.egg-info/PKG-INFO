@@ -1,0 +1,12 @@
+Metadata-Version: 2.4
+Name: qgjob
+Version: 0.1.0
+Summary: QualGent Job CLI for AppWright test orchestration
+Author: QualGent
+Requires-Python: >=3.7
+Requires-Dist: click
+Requires-Dist: requests
+Dynamic: author
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
