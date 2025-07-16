@@ -10,22 +10,23 @@ pip install .
 
 ### Usage
 
-#### Help
-
-```sh
-C:\Users\<YourUser>\AppData\Local\Programs\Python\PythonXY\Scripts\qgjob --help
-```
 
 #### Submit a test job
 
 ```sh
-C:\Users\<YourUser>\AppData\Local\Programs\Python\PythonXY\Scripts\qgjob submit --org-id=qualgent --app-version-id=xyz123 --test=tests/onboarding.spec.js --target=emulator
+python -m qgjob.cli submit --org-id=acme --app-version-id=xyz123 --test=tests/onboarding.spec.js --target=emulator
 ```
 
 #### Check job status
 
 ```sh
-C:\Users\<YourUser>\AppData\Local\Programs\Python\PythonXY\Scripts\qgjob status --job-id=abc456
+python -m qgjob.cli status --job-id=<job_id>
+```
+
+#### Help
+
+```sh
+python -m qgjob.cli --help
 ```
 
 ---
@@ -37,18 +38,14 @@ C:\Users\<YourUser>\AppData\Local\Programs\Python\PythonXY\Scripts\qgjob status 
 
 ### Backend Setup
 
+Nodejs should be installed from https://nodejs.org/en/download
+
 #### Install
 
 ```sh
 pip install -r requirements.txt
 ```
 #### Run Server
-
-```sh
-python -c "import uvicorn; uvicorn.run('job_server.main:app', host='0.0.0.0', port=8000, reload=True)"
-```
-
-#### Import
 
 ```sh
 python -c "import uvicorn; uvicorn.run('job_server.main:app', host='0.0.0.0', port=8000, reload=True)"
