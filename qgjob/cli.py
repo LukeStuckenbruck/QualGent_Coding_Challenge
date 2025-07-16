@@ -1,4 +1,5 @@
 import click
+import json
 from . import rest_client
 
 @click.group()
@@ -29,8 +30,11 @@ def submit(org_id, app_version_id, test_path, priority, target):
 @click.option('--job-id', required=True, help='Job ID to check status')
 def status(job_id):
     """Check the status of a job."""
-    result = rest_client.get_job_status(job_id)
-    click.echo(f"Job Status: {result}")
+    try:
+        result = rest_client.get_job_status(job_id)
+        click.echo(json.dumps(result))
+    except Exception as e:
+        click.echo(json.dumps({"status": "error", "message": str(e)}))
 
 if __name__ == "__main__":
     cli() 
