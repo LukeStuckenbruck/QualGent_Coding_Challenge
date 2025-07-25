@@ -42,5 +42,8 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install
 
-      - name: Run AppWright test
-        run: npx appwright test tests/onboarding.spec.js 
+      #- name: Run AppWright test
+      #  run: npx appwright test tests/onboarding.spec.js
+
+      - name: Run Playwright test
+        run: npx playwright test tests/onboarding.spec.js --headed
