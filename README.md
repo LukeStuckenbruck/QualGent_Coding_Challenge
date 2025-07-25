@@ -40,6 +40,9 @@ python -m qgjob.cli --help
 
 Nodejs should be installed from https://nodejs.org/en/download
 
+To fix pathing issue:
+$env:PATH += ;C:\Program Files\nodejs"
+
 #### Install
 
 ```sh

@@ -1,0 +1,19 @@
+{
+  "name": "qualgent-coding-challenge",
+  "version": "1.0.0",
+  "description": "QualGent Coding Challenge with BrowserStack integration",
+  "main": "index.js",
+  "scripts": {
+    "test": "appwright test",
+    "test:browserstack": "appwright test --config=appwright.browserstack.config.ts"
+  },
+  "dependencies": {
+    "appwright": "^0.1.45"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0"
+  },
+  "keywords": ["appwright", "browserstack", "mobile", "testing"],
+  "author": "",
+  "license": "ISC"
+}

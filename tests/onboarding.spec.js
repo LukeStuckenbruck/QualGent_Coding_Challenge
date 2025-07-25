@@ -1,17 +1,17 @@
-import { test, expect } from "appwright";
+import { test, expect } from "@playwright/test";
 
 test("Open Playwright on Wikipedia and verify Microsoft is visible", async ({
-  device,
+  page,
 }) => {
-  // Dismiss splash screen
-  await device.getByText("Skip").tap();
-
+  // Navigate to Wikipedia
+  await page.goto("https://www.wikipedia.org");
+  
   // Enter search term
-  const searchInput = device.getByText("Search Wikipedia", { exact: true });
-  await searchInput.tap();
+  const searchInput = page.locator('input[name="search"]');
   await searchInput.fill("playwright");
+  await searchInput.press("Enter");
 
   // Open search result and assert
-  await device.getByText("Playwright (software)").tap();
-  await expect(device.getByText("Microsoft")).toBeVisible();
-}); 
+  await page.getByRole("link", { name: "Playwright (software)" }).click();
+  await expect(page.getByText("Microsoft", { exact: true }).first()).toBeVisible();
+});
