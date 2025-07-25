@@ -5,10 +5,21 @@
 ### Installation
 
 ```sh
-pip install .
+pip install -r requirements.txt
 ```
+### Backend Setup
+
+Nodejs should be installed from https://nodejs.org/en/download
+
 
 ### Usage
+
+
+#### Start Server
+
+```sh
+python -c "import uvicorn; uvicorn.run('job_server.main:app', host='0.0.0.0', port=8000, reload=True)"
+```
 
 
 #### Submit a test job
@@ -35,56 +46,18 @@ python -m qgjob.cli --help
 
 ---
 
-
-### Backend Setup
-
-Nodejs should be installed from https://nodejs.org/en/download
-
-To fix pathing issue:
-$env:PATH += ;C:\Program Files\nodejs"
-
-#### Install
-
-```sh
-pip install -r requirements.txt
-```
-#### Run Server
-
-```sh
-python -c "import uvicorn; uvicorn.run('job_server.main:app', host='0.0.0.0', port=8000, reload=True)"
-```
-
-
 #### Grouping:
 
-Jobs are grouped by App Version ID and Target. Jobs must have the same App Version ID and Target to be in the same group.
+Jobs with the same app_version_id and target are grouped together
 
-Example Test Set:
+Jobs with different app_version_id create separate groups
 
-org_id:	    app_version_id	    test_path	            target	    Expected Group Key
+Jobs with different target create separate groups
 
-qualgent	    xyz123	    tests/onboarding.spec.js	emulator	('xyz123', 'emulator')
-qualgent	    xyz123	    tests/login.spec.js	        emulator	('xyz123', 'emulator')
-qualgent	    xyz123	    tests/onboarding.spec.js	device	    ('xyz123', 'device')
-qualgent	    xyz999	    tests/onboarding.spec.js	emulator	('xyz999', 'emulator')
-acme	        xyz123	    tests/onboarding.spec.js	emulator	('xyz123', 'emulator')
+Jobs in the same group run together (sequentially)
 
+The scheduler processes groups one at a time
 
-
-What to Expect:
-Jobs 1, 2, and 5 should be grouped together under ('xyz123', 'emulator').
-Job 3 should be in its own group: ('xyz123', 'device').
-Job 4 should be in its own group: ('xyz999', 'emulator').
-
-
-Commands to Submit Jobs:
-```sh
-python -m qgjob.cli submit --org-id=qualgent --app-version-id=xyz123 --test=tests/onboarding.spec.js --target=emulator
-python -m qgjob.cli submit --org-id=qualgent --app-version-id=xyz123 --test=tests/login.spec.js --target=emulator
-python -m qgjob.cli submit --org-id=qualgent --app-version-id=xyz123 --test=tests/onboarding.spec.js --target=device
-python -m qgjob.cli submit --org-id=qualgent --app-version-id=xyz999 --test=tests/onboarding.spec.js --target=emulator
-python -m qgjob.cli submit --org-id=acme --app-version-id=xyz123 --test=tests/onboarding.spec.js --target=emulator
-```
 
 Checking the Grouping:
 Visit http://localhost:8000/debug/groups in a browser and check "Pretty Print" to see the groups visually
@@ -100,6 +73,19 @@ python -m qgjob.cli status --job-id=<job_id>
 Immediately after submission, status should be queued.
 After a second or two, status should become running.
 After a few more seconds, status should become completed.
+
+### Testing Grouping and Scheduling
+
+```sh
+python cli_grouping_test.py
+```
+
+When you run the tests, you should see:
+Jobs with app_v1/emulator grouped together
+Jobs with app_v2/emulator in a separate group
+Jobs with app_v1/browserstack in another separate group
+Groups being processed one at a time by the scheduler
+
 
 
 
