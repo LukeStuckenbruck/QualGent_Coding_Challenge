@@ -11,9 +11,15 @@
     "appwright": "^0.1.45"
   },
   "devDependencies": {
+    "@playwright/test": "^1.54.1",
     "@types/node": "^20.0.0"
   },
-  "keywords": ["appwright", "browserstack", "mobile", "testing"],
+  "keywords": [
+    "appwright",
+    "browserstack",
+    "mobile",
+    "testing"
+  ],
   "author": "",
   "license": "ISC"
 }

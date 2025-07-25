@@ -17,6 +17,7 @@ jobs:
           pip install --upgrade pip
           pip install .
           pip install fastapi uvicorn pydantic
+          npm install
 
       - name: Start backend service
         run: |
@@ -40,7 +41,7 @@ jobs:
         run: npm install -g playwright
 
       - name: Install Playwright Browsers
-        run: npx playwright install
+        run: npx playwright install --with-deps
 
       #- name: Run AppWright test
       #  run: npx appwright test tests/onboarding.spec.js
