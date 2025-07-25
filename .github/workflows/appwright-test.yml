@@ -40,11 +40,11 @@ jobs:
       - name: Install Playwright
         run: npm install -g playwright
 
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+      #- name: Install Playwright Browsers
+      #  run: npx playwright install --with-deps
 
       #- name: Run AppWright test
       #  run: npx appwright test tests/onboarding.spec.js
 
       - name: Run Playwright test
-        run: npx playwright test tests/onboarding.spec.js --headed
+        run: npx playwright test tests/onboarding.spec.js
